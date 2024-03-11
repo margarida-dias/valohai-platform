@@ -3,9 +3,9 @@
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command:
       - python train-model.py --epochs {parameters.epochs} --optimizer {parameters.optimizer}
-    input:
+    inputs:
       - name: dataset
-        default: /valohai/inputs/dataset/coco128.zip  # path to your dataset
+        default: /valohai/inputs/dataset/coco128.zip
     parameters:
       - name: epochs
         type: integer
@@ -22,18 +22,20 @@
       - python predict.py
     inputs:
       - name: model
-        default: /valohai/inputs/model/best.onnx # path to your model
+        default: /valohai/inputs/model/best.onnx
       - name: images
-        default: /valohai/inputs/images/ # path to inference images
+        default: /valohai/inputs/images/
     environment: aws-eu-west-1-g4dn-xlarge
 
 - pipeline:
     name: yolo-training-inference-pipeline
     nodes:
       - name: training
+        type: execution
         step: yolo-training
       - name: inference
+        type: execution
         step: yolo-inference
-        depends_on: [training]
-    edges: [] # In this case, manual adjustment or an automated script is needed to connect output from training to inference step input.
+        dependencies: [training]
+
 
