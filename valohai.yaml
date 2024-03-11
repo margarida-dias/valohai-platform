@@ -11,7 +11,7 @@
     name: yolo-training
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command:
-      - python train-model.py --epochs {parameters.epochs} --optimizer {parameters.optimizer}
+      - python train-model.py --epochs 2 --optimizer "SGD"
     inputs:
       - name: dataset
         default: datum://018e2f1a-8ed8-79cf-9a6b-2fbc34140f35
