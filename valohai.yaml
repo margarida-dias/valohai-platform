@@ -25,6 +25,11 @@
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command:
       - python predict.py
+    inputs:
+        - name: model
+          default: /valohai/outputs/best.onnx
+        - name: images
+          default: /valohai/inputs/images/
 
 - pipeline:
     name: training-inference-pipeline
