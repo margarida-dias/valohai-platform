@@ -3,9 +3,6 @@
     image: docker.io/python:3.9.5
     command:
         - pip install -r requirements.txt
-    inputs:
-      - name: requirements
-        default: requirements.txt
 
 - step:
     name: yolo-training
@@ -14,7 +11,7 @@
       - python train-model.py --epochs {parameters.epochs} --optimizer {parameters.optimizer}
     inputs:
       - name: dataset
-        default: /valohai/inputs/dataset/coco128.zip
+        default: https://ultralytics.com/assets/coco128.zip
     parameters:
       - name: epochs
         type: integer
@@ -28,11 +25,6 @@
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command:
       - python predict.py
-    inputs:
-      - name: model
-        default: /valohai/inputs/model/best.onnx
-      - name: images
-        default: /valohai/inputs/images/
 
 - pipeline:
     name: training-inference-pipeline
@@ -47,6 +39,6 @@
         type: execution
         step: yolo-inference
     edges:
-      - [ training.output.model, inference.input.model ]
+      - [ training.output.model ]
 
 
