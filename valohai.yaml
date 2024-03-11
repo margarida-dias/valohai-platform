@@ -1,4 +1,13 @@
 - step:
+    name: install-dependencies
+    image: docker.io/python:3.9.5
+    command:
+        - pip install -r requirements.txt
+    inputs:
+      - name: requirements
+        default: requirements.txt
+
+- step:
     name: yolo-training
     image: docker.io/ultralytics/ultralytics:8.0.180-python
     command:
@@ -13,7 +22,6 @@
       - name: optimizer
         type: string
         default: SGD
-    environment: aws-eu-west-1-g4dn-xlarge
 
 - step:
     name: yolo-inference
@@ -25,17 +33,20 @@
         default: /valohai/inputs/model/best.onnx
       - name: images
         default: /valohai/inputs/images/
-    environment: aws-eu-west-1-g4dn-xlarge
 
 - pipeline:
     name: yolo-training-inference-pipeline
     nodes:
+      - name: setup project
+        type: execution
+        step: install-dependencies
       - name: training
         type: execution
         step: yolo-training
       - name: inference
         type: execution
         step: yolo-inference
-        dependencies: [training]
+    edges:
+      - [ training.output.model, inference.input.model ]
 
 

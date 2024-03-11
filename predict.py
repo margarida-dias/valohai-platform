@@ -1,19 +1,21 @@
 from ultralytics import YOLO
 import os
 
-path_to_model = "/valohai/inputs/model/best.onnx"
-path_to_images = "/valohai/inputs/images/"
+if __name__ == "__main__":
 
-model = YOLO(path_to_model)
+    path_to_model = "./valohai/outputs/best.onnx"
+    path_to_images = "./valohai/inputs/images/"
 
-for image in os.listdir(path_to_images):
-    image_path = os.path.join(path_to_images, image)
+    model = YOLO(path_to_model, task="detect")
 
-    if os.path.isfile(image_path):
-        # Run prediction on image
-        # Save result as an image in /valohai/outputs/
-        results = model.predict(image_path, save=True, project="/valohai/outputs", name="predictions")
+    for image in os.listdir(path_to_images):
+        image_path = os.path.join(path_to_images, image)
 
-        # Print the Boxes object containing the detection bounding boxes
-        for r in results:
-            print(r.boxes)
+        if os.path.isfile(image_path):
+            # Run prediction on image
+            # Save result as an image in /valohai/outputs/
+            results = model.predict(image_path, save=True, project="./valohai/outputs", name="predictions")
+
+            # Print the Boxes object containing the detection bounding boxes
+            for r in results:
+                print(r.boxes)
