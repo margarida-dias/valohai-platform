@@ -1,0 +1,9 @@
+*.egg-info
+*.pyc
+*.gz
+.cache
+.DS_Store
+.idea
+.venv
+.python-version
+.env
