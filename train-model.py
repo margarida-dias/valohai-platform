@@ -42,7 +42,7 @@ optimizer=args.optimizer, verbose=False)  # train the model
 path = model.export(format="onnx")  # export the model to ONNX format
 
 # Valohai: Copy the exported model to the Valohai outputs directory
-shutil.copy(path, './valohai/outputs/')
+shutil.copy(path, '/valohai/outputs/')
 
 # Save the model with the alias production-model-a
 file_metadata = {
@@ -50,5 +50,5 @@ file_metadata = {
     "valohai.tags": ["project-a", "aerospace"]
 }
 
-with open("./valohai/outputs/best.onnx.metadata.json", "w") as outfile:
+with open("/valohai/outputs/best.onnx.metadata.json", "w") as outfile:
     json.dump(file_metadata, outfile)
